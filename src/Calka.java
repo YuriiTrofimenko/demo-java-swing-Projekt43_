@@ -21,7 +21,8 @@ public class Calka extends javax.swing.JFrame {
     int maxP = 1000; // liczba punktów losowanych w serii
     // абсолютно точно значение определенного интеграла рассчитали заранее
     // при помощи математического анализа
-    final double W = 2.469; // stała W - wartość teoretyczna wyniku
+    // final double W = 2.469; // stała W - wartość teoretyczna wyniku
+    final double W = 1.0; // stała W - wartość teoretyczna wyniku
     double wynik = 0; // oszacowanie wyniku
     Random r = new Random();
     Image obraz;
@@ -52,12 +53,15 @@ public class Calka extends javax.swing.JFrame {
     }
 
     private void losowanie() {
-        double x = 2 * r.nextDouble(); //(x,y)– wylosowany punkt x0,2), y0,4)
-        double y = 4 * r.nextDouble();
+        // double x = 2 * r.nextDouble(); //(x,y)– wylosowany punkt x0,2), y0,4)
+        // double y = 4 * r.nextDouble();
+        double x = 1 + (Math.E - 1) * r.nextDouble(); //(x,y)– wylosowany punkt x0,2), y0,4)
+        double y = r.nextDouble();
         // если координаты для точки лежат снизу от графика функции
         // "икс в квадрате умноженный на синус от икс",
         // то увеличиваем значение счетчика попаданий и рисовать будем красным
-        if (y <= x * x * Math.sin(x)) {
+        // if (y <= x * x * Math.sin(x)) {
+        if (y <= Math.log(x)) {
             sukcesów++;
             bufor.setColor(Color.red);
         } else {
@@ -65,14 +69,17 @@ public class Calka extends javax.swing.JFrame {
             bufor.setColor(Color.yellow);
         }
         // умножаем координаты точки на масштаб панели рисования
-        int xp = (int) (x / 2 * panel.getWidth());//przeliczenie współrzędnych punktu na panelu
-        int yp = panel.getHeight() - (int) (y / 4 * panel.getHeight());
+        // int xp = (int) (x / 2 * panel.getWidth());//przeliczenie współrzędnych punktu na panelu
+        // int yp = panel.getHeight() - (int) (y / 4 * panel.getHeight());
+        int xp = (int) ((x - 1) / (Math.E - 1) * panel.getWidth());//przeliczenie współrzędnych punktu na panelu
+        int yp = panel.getHeight() - (int) (y * panel.getHeight());
         // геометрическая точка не имеет размеров, поэтому рисуем точку
         // как отрезок без длины
         bufor.drawLine(xp, yp, xp, yp); //rysowanie punktu
         // текущий процент попаданий, умноженный на площадь всего прямоугольника,
         // равен полощади, оказавшейся под графиком функцииы
-        wynik = 8.0 * sukcesów / lpunktow;
+        // wynik = 8.0 * sukcesów / lpunktow;
+        wynik = (Math.E - 1) * sukcesów / lpunktow;
     }
 
     private void start() {
